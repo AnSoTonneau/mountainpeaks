@@ -25,3 +25,7 @@ $ docker-compose up -d --build
 </div>
 
 
+## Running
+
+For accessing REST API, open your browser at <a href="http://127.0.0.1:8000/" class="external-link" target="_blank">http://127.0.0.1:8000/</a>.
+For database management, open your browser at <a href="http://127.0.0.1:5050/" class="external-link" target="_blank">http://127.0.0.1:5050/</a> and login with email "admin@app.com/admin" and password "admin"
