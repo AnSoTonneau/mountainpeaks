@@ -54,9 +54,11 @@ async def delete_peak(peak_id: int):
         raise HTTPException(status_code=404, detail=f"Peak {peak_id} not found")
 
 
-@app.get("/peaks/list")
-async def read_geoloc():
-    return await MountainPeak.objects.all()
+@app.get("/peaks/list/")
+async def read_geoloc(lat_min: float, lat_max: float, lon_min: float, lon_max: float):
+    books = await MountainPeak.objects.filter((MountainPeak.lat >= lat_min) & (MountainPeak.lat <= lat_max) &
+                                              (MountainPeak.lon >= lon_min) & (MountainPeak.lon <= lon_max)).all()
+    return books
 
 @app.on_event("shutdown")
 async def shutdown():
