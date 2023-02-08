@@ -24,5 +24,5 @@ class MountainPeak(ormar.Model):
 
 
 engine = sqlalchemy.create_engine(settings.db_url)
-
+metadata.drop_all(engine)
 metadata.create_all(engine)

@@ -1,51 +1,64 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+import asyncpg
 
 from db import MountainPeak, database
+import ormar
 
 app = FastAPI(title="API for mountain peaks retrieving")
-
-
-@app.get("/")
-async def read_root():
-    return await MountainPeak.objects.all()
-
 
 @app.on_event("startup")
 async def startup():
     if not database.is_connected:
         await database.connect()
-    # create a dummy entry
-    await MountainPeak.objects.get_or_create(name="K8", lon=64.58, lat=556.4, altitude=8000)
+    # create dummy entries
+    await MountainPeak.objects.get_or_create(name="Everest", lat=27.988056, lon=86.925278, altitude=8849)
+    await MountainPeak.objects.get_or_create(name="K2", lat=35.8825, lon=76.513333, altitude=8611)
+    await MountainPeak.objects.get_or_create(name="Mont Blanc", lat=45.832778, lon=6.865, altitude=4696)
+    await MountainPeak.objects.get_or_create(name="Pic du Midi de Bigorre", lat=42.936389, lon=0.142778, altitude=2877)
 
+@app.get("/")
+def read_root():
+    return {"Mountain Peaks API": "Ready"}
+
+@app.get("/peaks")
+async def read_peaks():
+    return await MountainPeak.objects.all()
+
+@app.get("/peaks/{peak_id}")
+async def read_peak(peak_id: int):
+    try:
+        return await MountainPeak.objects.get(MountainPeak.id == peak_id)
+    except ormar.exceptions.NoMatch:
+        raise HTTPException(status_code=404, detail=f"Peak {peak_id} not found")
+
+@app.put("/peaks/{peak_id}")
+async def update_peak(peak_id: int, peak: MountainPeak):
+    peak_db = await MountainPeak.objects.get(MountainPeak.id == peak_id)
+    return await peak_db.update(**peak.dict())
+
+@app.post("/peaks")
+async def create_peak(peak: MountainPeak):
+    try:
+        await peak.save()
+        return peak
+    except asyncpg.exceptions.UniqueViolationError:
+        raise HTTPException(status_code=400, detail=f"Peak name {peak.name} or id {peak.id} already exists")
+
+@app.delete("/peaks/{peak_id}")
+async def delete_peak(peak_id: int):
+    try:
+        peak_db = await MountainPeak.objects.get(MountainPeak.id == peak_id)
+        await peak_db.delete()
+        return peak_db
+    except ormar.exceptions.NoMatch:
+        raise HTTPException(status_code=404, detail=f"Peak {peak_id} not found")
+
+
+@app.get("/peaks/list")
+async def read_geoloc():
+    return await MountainPeak.objects.all()
 
 @app.on_event("shutdown")
 async def shutdown():
     if database.is_connected:
         await database.disconnect()
-
-'''
-@app.get("/")
-def read_root():
-    return {"Mountain Peaks API": "Ready"}
-
-
-@app.get("/peaks/{peak_id}")
-def read_peak(peak_id: int, q: Union[str, None] = None):
-    return {"peak_id": peak_id, "q": q}
-
-@app.put("/peaks/{peak_id}")
-def update_peak(peak_id: int, peak: MountainPeak):
-    return {"peak_name": peak.name, "peak_id": peak_id}
-
-@app.post("/peaks/{peak_id}")
-def create_peak(peak_id: int, peak: MountainPeak):
-    return {"peak_name": peak.name, "peak_id": peak_id}
-
-@app.delete("/peaks/{peak_id}")
-def delete_peak(peak_id: int):
-    return {"peak_id": peak_id}
-
-@app.get("/peaks")
-def get_peaks():
-    return ["peak1", "peak2"]
-'''
