@@ -3,8 +3,8 @@
 This project is a REST application for managing moutain peaks in a database :
 * **REST API**: the web services are implemented using FastAPI. See /main.py
 * **Database model**: the database model and access are performed using ormar and SQLAlchemy. See /db.py
-* **Database access**: the data are stored in a PostGIS database.
-*  **Docker**: the application is built and deployed in user containers. See /docker-compose.yml file
+* **Database access**: the data is stored in a PostGIS database.
+*  **Docker**: the application is built and deployed in docker containers. See /docker-compose.yml file
 
 ## Requirements
 
