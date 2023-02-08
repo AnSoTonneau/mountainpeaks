@@ -1,10 +1,10 @@
 # mountainpeaks
 
 This project is a REST application for managing moutain peaks in a database :
-* **REST API**: the web services are implemented using FastAPI. See /main.py
-* **Database model**: the database model and access are performed using ormar and SQLAlchemy. See /db.py
-* **Database access**: the data is stored in a PostGIS database.
-*  **Docker**: the application is built and deployed in docker containers. See /docker-compose.yml file
+* **REST API**: the web services are implemented using FastAPI. See _/main.py_
+* **Database model**: the database model and access are performed using ormar and SQLAlchemy. See _/db.py_
+* **Database access**: the data is stored in a PostGIS database. A pgAdmin is deployed for database management.
+*  **Docker**: the application is built and deployed in docker containers. See _/docker-compose.yml_ file
 
 ## Requirements
 
