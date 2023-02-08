@@ -1,6 +1,6 @@
 # mountainpeaks
 
-This project is a REST application for managing moutain peaks in a database :
+This application is a simple web service for storing and retrieving moutain peaks :
 * **REST API**: the web services are implemented using FastAPI. See _/main.py_
 * **Database model**: the database model and access are performed using ormar and SQLAlchemy. See _/db.py_
 * **Database access**: the data is stored in a PostGIS database. A pgAdmin is deployed for database management.
