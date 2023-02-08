@@ -4,6 +4,8 @@ This application is a simple web service for storing and retrieving moutain peak
 * **REST API**: the web services are implemented using FastAPI. See _/main.py_
 * **Database model**: the database model and access are performed using ormar and SQLAlchemy. See _/db.py_
 * **Database access**: the data is stored in a PostGIS database. A pgAdmin is deployed for database management.
+<span style="color:red">*The database and geographical request don't use for now the specific PostGIS functions. Since I don't know PostGIS, I would need more time to use its functionnalities properly.*</span>.
+
 *  **Docker**: the application is built and deployed in docker containers. See _/docker-compose.yml_ file
 
 ## Requirements
