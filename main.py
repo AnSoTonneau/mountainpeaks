@@ -8,6 +8,9 @@ app = FastAPI(title="API for mountain peaks retrieving")
 
 @app.on_event("startup")
 async def startup():
+    """
+    Connect to the database and populate it with some test data
+    """
     if not database.is_connected:
         await database.connect()
     # create dummy entries
@@ -18,14 +21,23 @@ async def startup():
 
 @app.get("/")
 def read_root():
+    """
+    Root of the API
+    """
     return {"Mountain Peaks API": "Ready"}
 
 @app.get("/peaks")
 async def read_peaks():
+    """
+    Return the content of the data table
+    """
     return await MountainPeak.objects.all()
 
 @app.get("/peaks/{peak_id}")
 async def read_peak(peak_id: int):
+    """
+    Return a peak giving a peak_id
+    """
     try:
         return await MountainPeak.objects.get(MountainPeak.id == peak_id)
     except ormar.exceptions.NoMatch:
@@ -33,11 +45,17 @@ async def read_peak(peak_id: int):
 
 @app.put("/peaks/{peak_id}")
 async def update_peak(peak_id: int, peak: MountainPeak):
+    """
+    Update a peak giving a peak_id and a peak object
+    """
     peak_db = await MountainPeak.objects.get(MountainPeak.id == peak_id)
     return await peak_db.update(**peak.dict())
 
 @app.post("/peaks")
 async def create_peak(peak: MountainPeak):
+    """
+    Create a peak giving a peak object
+    """
     try:
         await peak.save()
         return peak
@@ -46,6 +64,9 @@ async def create_peak(peak: MountainPeak):
 
 @app.delete("/peaks/{peak_id}")
 async def delete_peak(peak_id: int):
+    """
+    Delete a peak giving a peak_id
+    """
     try:
         peak_db = await MountainPeak.objects.get(MountainPeak.id == peak_id)
         await peak_db.delete()
@@ -56,11 +77,17 @@ async def delete_peak(peak_id: int):
 
 @app.get("/peaks/list/")
 async def read_geoloc(lat_min: float, lat_max: float, lon_min: float, lon_max: float):
+    """
+    Return a list of peaks corresponding to a given geographical bounding box
+    """
     books = await MountainPeak.objects.filter((MountainPeak.lat >= lat_min) & (MountainPeak.lat <= lat_max) &
                                               (MountainPeak.lon >= lon_min) & (MountainPeak.lon <= lon_max)).all()
     return books
 
 @app.on_event("shutdown")
 async def shutdown():
+    """
+    Disconnect from the database
+    """
     if database.is_connected:
         await database.disconnect()

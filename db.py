@@ -13,6 +13,14 @@ class BaseMeta(ormar.ModelMeta):
 
 
 class MountainPeak(ormar.Model):
+    """
+    The model class for a MountainPeak representation :
+    - id : Integer
+    - name : String
+    - lat : Float
+    - lon : Float
+    - altitude : Float
+    """
     class Meta(BaseMeta):
         tablename = "mountainpeaks"
 
