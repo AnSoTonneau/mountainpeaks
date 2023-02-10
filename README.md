@@ -25,6 +25,8 @@ For deployment:
 <div class="termy">
 
 ```console
+$ git clone https://github.com/AnSoTonneau/mountainpeaks.git
+$ cd mountainpeaks/
 $ docker-compose up -d --build
 ```
 
