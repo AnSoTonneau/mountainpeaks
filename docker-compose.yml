@@ -7,6 +7,7 @@ services:
       - '5432:5432'
     environment:
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mountainpeaks_database
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -26,7 +27,7 @@ services:
     ports:
       - "8000:80"
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/mountainpeaks_db
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/mountainpeaks_database
     volumes:
       - .:/code
     depends_on:

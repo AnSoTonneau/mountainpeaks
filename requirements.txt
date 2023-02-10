@@ -1,6 +1,7 @@
 pydantic
 databases
 sqlalchemy
+sqlalchemy_utils
 fastapi==0.89.1
 ormar==0.12.1
 uvicorn==0.20.0
